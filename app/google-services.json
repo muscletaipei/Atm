@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "609402671900",
+    "firebase_url": "https://atmtest-d1043.firebaseio.com",
+    "project_id": "atmtest-d1043",
+    "storage_bucket": "atmtest-d1043.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609402671900:android:4691f51e5aa657b39ee0d9",
+        "android_client_info": {
+          "package_name": "tw.dworker.atm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609402671900-77aus6phl9053i584ob0ovrkm835c4us.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlz4CfBXqJC9gY20dYtHwKfT-5r4RlHLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609402671900-77aus6phl9053i584ob0ovrkm835c4us.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
