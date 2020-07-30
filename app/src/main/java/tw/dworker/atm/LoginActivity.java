@@ -39,13 +39,14 @@ public class LoginActivity extends AppCompatActivity {
         final String passwd = ed_Passwd.getText().toString();
         Log.d(TAG, "userid : " + userid + "\t" +"passwd : "+ passwd);
 
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users").child(userid).child("password");
-        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("users").child(userid).child("password");
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "onDataChange: ");
                         String pw = (String) snapshot.getValue();
-                        if (pw.equals(passwd)){
+                Log.d(TAG, "Firebase Connected: ");
+
+                if (pw.equals(passwd)){
                             setResult(RESULT_OK);
                             finish();
                         }
@@ -58,21 +59,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        FirebaseDatabase.getInstance().getReference("users").child(userid).child("password")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
-
 
 /*        if ("jack".equals(userid) && "123456".equals(passwd)){
             setResult(RESULT_OK);
@@ -83,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void quit(View view){
+        finish();
 
     }
 
