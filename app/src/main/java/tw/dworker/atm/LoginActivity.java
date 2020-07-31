@@ -28,8 +28,27 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+ /*       // Default 存入資料＝＝＝＝＝＝＝
+        getSharedPreferences("ATM",MODE_PRIVATE)
+                .edit()
+                .putInt("LEVEL",3)
+                .putString("NAME","joe")
+                .commit();
+        // 存入資料＝＝＝＝＝＝＝
+        // 寫入資料＝＝＝＝＝＝＝
+        int level = getSharedPreferences("ATM",MODE_PRIVATE)
+                .getInt("LEVEL",0);
+        // 寫入資料＝＝＝＝＝＝＝
+        Log.d(TAG, "getSharedPreferences write " + level);*/
+ 
         ed_Userid = findViewById(R.id.userid);
         ed_Passwd = findViewById(R.id.passwd);
+
+        //read userid=====
+        String userid = getSharedPreferences("ATM",MODE_PRIVATE)
+                .getString("USERID","");
+        ed_Userid.setText(userid);
+        //read userid=====
 
 
     }
@@ -50,11 +69,19 @@ public class LoginActivity extends AppCompatActivity {
                 String user = (String) snapshot.getValue();
                 Log.d(TAG, "Firebase Connected: ");
 
-                if (pw.equals(passwd) && user.equals(userid)){
-                            setResult(RESULT_OK);
-                            finish();
+                if (pw.equals(passwd) ){
+
+                    // save userid===
+                    getSharedPreferences("ATM",MODE_PRIVATE)
+                            .edit()
+                            .putString("USERID", userid)
+                            .apply();
+                    // save userid===
+
+                    setResult(RESULT_OK);
+                    finish();
                     Log.d(TAG, "Login success:");
-                        }else {
+                }else {
                     new AlertDialog.Builder(LoginActivity.this)
                             .setTitle("訊息")
                             .setMessage("登入失敗")
@@ -69,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-        
+
 /*        if ("jack".equals(userid) && "123456".equals(passwd)){
             setResult(RESULT_OK);
             finish();
