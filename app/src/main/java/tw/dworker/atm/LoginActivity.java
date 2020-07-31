@@ -1,7 +1,9 @@
 package tw.dworker.atm;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -35,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View view){
         Log.d(TAG, "login:");
 
-        String userid = ed_Userid.getText().toString();
+        final String userid = ed_Userid.getText().toString();
         final String passwd = ed_Passwd.getText().toString();
         Log.d(TAG, "userid : " + userid + "\t" +"passwd : "+ passwd);
 
@@ -43,14 +45,30 @@ public class LoginActivity extends AppCompatActivity {
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String pw = (String) snapshot.getValue();
+
+                String pw = (String) snapshot.getValue();
+                String user = (String) snapshot.getValue();
                 Log.d(TAG, "Firebase Connected: ");
 
-                if (pw.equals(passwd)){
+                if (pw.equals(passwd) && user.equals(userid)){
                             setResult(RESULT_OK);
                             finish();
-                        }
-
+                    Log.d(TAG, "Login success:");
+                        }else {
+                    new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle("訊息")
+                            .setMessage("登入失敗")
+                            .setPositiveButton("確認",null)
+                            .show();
+                    Log.d(TAG, "Login failed: ");
+                }
+/*                if (snapshot.hasChild("userid")){
+                    new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle("錯誤訊息")
+                            .setMessage("輪入帳號錯誤")
+                            .setPositiveButton("確認",null)
+                            .show();
+                }*/
             }
 
             @Override
@@ -58,6 +76,27 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+/*        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild("user_id")) {
+                    // your code
+                }
+            }
+        });*/
 
 
 /*        if ("jack".equals(userid) && "123456".equals(passwd)){
