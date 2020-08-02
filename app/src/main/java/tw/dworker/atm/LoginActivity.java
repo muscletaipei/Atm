@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                 .getInt("LEVEL",0);
         // 寫入資料＝＝＝＝＝＝＝
         Log.d(TAG, "getSharedPreferences write " + level);*/
- 
+
         ed_Userid = findViewById(R.id.userid);
         ed_Passwd = findViewById(R.id.passwd);
 
@@ -49,8 +49,6 @@ public class LoginActivity extends AppCompatActivity {
                 .getString("USERID","");
         ed_Userid.setText(userid);
         //read userid=====
-
-
     }
 
     public void login(View view){
@@ -68,8 +66,14 @@ public class LoginActivity extends AppCompatActivity {
                 String pw = (String) snapshot.getValue();
                 String user = (String) snapshot.getValue();
                 Log.d(TAG, "Firebase Connected: ");
-
-                if (pw.equals(passwd) ){
+                if (snapshot.getValue() == null){
+                    Log.d(TAG, "Get Value "+ snapshot.getValue());
+                    new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle("訊息")
+                            .setMessage("登入失敗")
+                            .setPositiveButton("確認",null)
+                            .show();
+                }else if (pw.equals(passwd) ){
 
                     // save userid===
                     getSharedPreferences("ATM",MODE_PRIVATE)
