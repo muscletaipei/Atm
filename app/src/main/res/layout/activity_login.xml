@@ -48,8 +48,8 @@
 
     <EditText
         android:id="@+id/userid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -58,8 +58,8 @@
 
     <EditText
         android:id="@+id/passwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="textPassword"
@@ -85,4 +85,13 @@
         android:text="離開"
         app:layout_constraintStart_toEndOf="@+id/login"
         app:layout_constraintTop_toTopOf="@+id/login" />
+
+    <CheckBox
+        android:id="@+id/cb_remember_userid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Remember ID"
+        app:layout_constraintBottom_toBottomOf="@+id/userid"
+        app:layout_constraintStart_toEndOf="@+id/userid" />
 </androidx.constraintlayout.widget.ConstraintLayout>

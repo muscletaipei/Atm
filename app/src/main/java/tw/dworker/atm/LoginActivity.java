@@ -1,15 +1,14 @@
 package tw.dworker.atm;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private EditText ed_Userid;
     private EditText ed_Passwd;
+    private CheckBox cbRemId;
+    private boolean checked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +44,25 @@ public class LoginActivity extends AppCompatActivity {
 
         ed_Userid = findViewById(R.id.userid);
         ed_Passwd = findViewById(R.id.passwd);
+        cbRemId = findViewById(R.id.cb_remember_userid);
+
+        boolean rem_Checked = getSharedPreferences("ATM", MODE_PRIVATE)
+                .getBoolean("REMEMBER_ID", false);
+        cbRemId.setChecked(rem_Checked);
 
         //read userid=====
         String userid = getSharedPreferences("ATM",MODE_PRIVATE)
                 .getString("USERID","");
         ed_Userid.setText(userid);
         //read userid=====
+
+        cbRemId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                checked = b;
+                Log.d(TAG, "onCheckedChanged: " + checked);
+            }
+        });
     }
 
     public void login(View view){
@@ -74,13 +88,12 @@ public class LoginActivity extends AppCompatActivity {
                             .setPositiveButton("確認",null)
                             .show();
                 }else if (pw.equals(passwd) ){
-
-                    // save userid===
+                    String uid = (checked) ? userid: "";
                     getSharedPreferences("ATM",MODE_PRIVATE)
                             .edit()
-                            .putString("USERID", userid)
+                            .putString("USERID",uid)
+                            .putBoolean("REMEMBER_ID", checked)
                             .apply();
-                    // save userid===
 
                     setResult(RESULT_OK);
                     finish();
