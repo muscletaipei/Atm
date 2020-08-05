@@ -94,4 +94,13 @@
         android:text="Remember ID"
         app:layout_constraintBottom_toBottomOf="@+id/userid"
         app:layout_constraintStart_toEndOf="@+id/userid" />
+
+    <CheckBox
+        android:id="@+id/cb_remember_pw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="RememberPW"
+        app:layout_constraintBottom_toBottomOf="@+id/passwd"
+        app:layout_constraintStart_toEndOf="@+id/passwd" />
 </androidx.constraintlayout.widget.ConstraintLayout>

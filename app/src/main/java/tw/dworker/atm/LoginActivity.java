@@ -5,11 +5,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Transformation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,13 +28,14 @@ public class LoginActivity extends AppCompatActivity {
     private EditText ed_Passwd;
     private CheckBox cbRemId;
     private boolean checked;
+    private CheckBox cbRemPw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
- /*       // Default 存入資料＝＝＝＝＝＝＝
-        getSharedPreferences("ATM",MODE_PRIVATE)
+        // Default 存入資料＝＝＝＝＝＝＝
+/*        getSharedPreferences("ATM",MODE_PRIVATE)
                 .edit()
                 .putInt("LEVEL",3)
                 .putString("NAME","joe")
@@ -39,16 +44,12 @@ public class LoginActivity extends AppCompatActivity {
         // 寫入資料＝＝＝＝＝＝＝
         int level = getSharedPreferences("ATM",MODE_PRIVATE)
                 .getInt("LEVEL",0);
-        // 寫入資料＝＝＝＝＝＝＝
-        Log.d(TAG, "getSharedPreferences write " + level);*/
+        // 寫入資料＝＝＝＝＝＝＝*/
 
         ed_Userid = findViewById(R.id.userid);
         ed_Passwd = findViewById(R.id.passwd);
         cbRemId = findViewById(R.id.cb_remember_userid);
-
-        boolean rem_Checked = getSharedPreferences("ATM", MODE_PRIVATE)
-                .getBoolean("REMEMBER_ID", false);
-        cbRemId.setChecked(rem_Checked);
+        cbRemPw = findViewById(R.id.cb_remember_pw);
 
         //read userid=====
         String userid = getSharedPreferences("ATM",MODE_PRIVATE)
@@ -56,11 +57,27 @@ public class LoginActivity extends AppCompatActivity {
         ed_Userid.setText(userid);
         //read userid=====
 
+        boolean rem_Checked = getSharedPreferences("ATM", MODE_PRIVATE)
+                .getBoolean("REMEMBER_ID", false);
+        cbRemId.setChecked(rem_Checked);
+        Log.d(TAG, "getSharedPreferences get " + rem_Checked);
+
+
         cbRemId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 checked = b;
-                Log.d(TAG, "onCheckedChanged: " + checked);
+                Log.d(TAG, "onCheckedChanged: " + "\t" + checked);
+            }
+        });
+        cbRemPw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (cbRemPw.isChecked()){
+                    ed_Passwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }else {
+                    ed_Passwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
             }
         });
     }
@@ -89,11 +106,13 @@ public class LoginActivity extends AppCompatActivity {
                             .show();
                 }else if (pw.equals(passwd) ){
                     String uid = (checked) ? userid: "";
+                    Log.d(TAG, "onDataChange: " + checked + "\t" + userid);
                     getSharedPreferences("ATM",MODE_PRIVATE)
                             .edit()
                             .putString("USERID",uid)
                             .putBoolean("REMEMBER_ID", checked)
                             .apply();
+                    Toast.makeText(LoginActivity.this,"Login successfully",Toast.LENGTH_LONG).show();
 
                     setResult(RESULT_OK);
                     finish();
