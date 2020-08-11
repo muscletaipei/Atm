@@ -9,6 +9,8 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_LOGIN = 100;
     boolean logon = false;
+    String[] functions = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,15 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+/*        //Recycler
+        RecyclerView recyclerView = findViewById(R.id.recycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //Adaptor
+        FunctionAdapter adapter = new FunctionAdapter(this);
+        recyclerView.setAdapter(adapter);*/
+
     }
 
     @Override

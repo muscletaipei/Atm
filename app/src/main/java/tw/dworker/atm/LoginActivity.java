@@ -34,8 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Default 存入資料＝＝＝＝＝＝＝
-/*        getSharedPreferences("ATM",MODE_PRIVATE)
+/*        // Default 存入資料＝＝＝＝＝＝＝
+        getSharedPreferences("ATM",MODE_PRIVATE)
                 .edit()
                 .putInt("LEVEL",3)
                 .putString("NAME","joe")
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         //read userid=====
 
         boolean rem_Checked = getSharedPreferences("ATM", MODE_PRIVATE)
-                .getBoolean("REMEMBER_ID", false);
+                .getBoolean("REMEMBER_ID", true);
         cbRemId.setChecked(rem_Checked);
         Log.d(TAG, "getSharedPreferences get " + rem_Checked);
 
@@ -96,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 String pw = (String) snapshot.getValue();
                 String user = (String) snapshot.getValue();
+
                 Log.d(TAG, "Firebase Connected: ");
                 if (snapshot.getValue() == null){
                     Log.d(TAG, "Get Value "+ snapshot.getValue());
@@ -106,12 +107,24 @@ public class LoginActivity extends AppCompatActivity {
                             .show();
                 }else if (pw.equals(passwd) ){
                     String uid = (checked) ? userid: "";
+
                     Log.d(TAG, "onDataChange: " + checked + "\t" + userid);
                     getSharedPreferences("ATM",MODE_PRIVATE)
                             .edit()
                             .putString("USERID",uid)
-                            .putBoolean("REMEMBER_ID", checked)
+                            .putBoolean("REMEMBER_ID", checked) //checked是在onCreate方法中傾聽核取方塊勾選的boolean值
                             .apply();
+                    if (checked){
+                        getSharedPreferences("ATM", MODE_PRIVATE)
+                                .edit()
+                                .putString("USERID",userid)   //checked為true時,將userid儲存在ATM.xml中
+                                .apply();
+                    }else {
+                        getSharedPreferences("ATM",MODE_PRIVATE)
+                                .edit()
+                                .putString("USERID","") //checked為false時,將空字串儲存在ATM.xml中
+                                .apply();
+                    }
                     Toast.makeText(LoginActivity.this,"Login successfully",Toast.LENGTH_LONG).show();
 
                     setResult(RESULT_OK);
